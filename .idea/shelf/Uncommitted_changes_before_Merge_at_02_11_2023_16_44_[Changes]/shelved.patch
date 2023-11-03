@@ -1,0 +1,17 @@
+Index: app/src/main/res/values/dimens.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<resources>\r\n    <dimen name=\"textSize_22sp\">22sp</dimen>\r\n    <dimen name=\"margin_4dp\">4dp</dimen>\r\n    <dimen name=\"textFontWeight_500\">500</dimen>\r\n\r\n</resources>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/values/dimens.xml b/app/src/main/res/values/dimens.xml
+--- a/app/src/main/res/values/dimens.xml	(revision 14fcfa955209414ea4351eaeaa566f7e3fbb583f)
++++ b/app/src/main/res/values/dimens.xml	(date 1698929073380)
+@@ -3,5 +3,4 @@
+     <dimen name="textSize_22sp">22sp</dimen>
+     <dimen name="margin_4dp">4dp</dimen>
+     <dimen name="textFontWeight_500">500</dimen>
+-
+ </resources>
+\ No newline at end of file
