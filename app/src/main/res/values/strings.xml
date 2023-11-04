@@ -43,4 +43,16 @@
     <string name="main_menu_button">Главная</string>
     <string name="favorite_menu_button">Избранное</string>
     <string name="team_menu_button">Команда</string>
+
+    <!-- Vacancy -->
+    <string name="vacancy">Вакансия</string>
+    <string name="required_experience">Требуемый опыт</string>
+    <string name="vacancy_description">Описание вакансии</string>
+    <string name="vacancy_key_skills">Ключевые навыки</string>
+    <string name="vacancy_contacts">Контакты</string>
+    <string name="vacancy_contact_person">Контактное лицо</string>
+    <string name="vacancy_contact_email">E-mail</string>
+    <string name="vacancy_contact_phone">Телефон</string>
+    <string name="repeat_loading">Повторить загрузку</string>
+
 </resources>
