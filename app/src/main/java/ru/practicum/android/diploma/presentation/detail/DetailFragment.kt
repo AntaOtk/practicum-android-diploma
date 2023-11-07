@@ -56,6 +56,16 @@ class DetailFragment : Fragment() {
         }
         binding.skillsTv.text = vacancy.skills
         binding.requirementsTv.text = vacancy.requirements
+
+        binding.phone.setOnClickListener {
+            if(vacancy.contacts?.phones != null)
+                viewModel.sharePhone(binding.phoneTitle.text.toString())
+        }
+
+        binding.emailAddress.setOnClickListener {
+            if(vacancy.contacts?.email != null)
+                viewModel.shareEmail(vacancy.contacts?.email!!)
+        }
     }
 
 
