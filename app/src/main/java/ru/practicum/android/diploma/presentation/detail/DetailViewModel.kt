@@ -9,4 +9,12 @@ class DetailViewModel(val interactor: DetailInteractor) : ViewModel() {
     fun getVacancy():Vacancy{
         return interactor.getVacancy()
     }
+
+    fun sharePhone(phone: String){
+        interactor.sharePhone(phone)
+    }
+
+    fun shareEmail(email: String){
+        interactor.shareEmail(email)
+    }
 }
