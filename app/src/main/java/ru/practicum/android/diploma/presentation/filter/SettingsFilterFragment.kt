@@ -13,7 +13,7 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentSettingsFiltersBinding
 
 class SettingsFilterFragment: Fragment() {
-    private val viewModel by viewModel<FilterViewModel>()
+    private val viewModel by viewModel<FiltersViewModel>()
 
     private var _binding: FragmentSettingsFiltersBinding? = null
     private val binding get() = _binding!!

@@ -13,6 +13,7 @@ import ru.practicum.android.diploma.data.dto.Response
 import ru.practicum.android.diploma.data.dto.detail.DetailRequest
 import ru.practicum.android.diploma.data.dto.filter.CountryRequest
 import ru.practicum.android.diploma.data.dto.filter.CountryResponse
+import ru.practicum.android.diploma.data.dto.search.IndustriesSearchRequest
 import ru.practicum.android.diploma.data.dto.search.SearchRequest
 import ru.practicum.android.diploma.data.dto.similar.SearchSimilarRequest
 
@@ -90,6 +91,28 @@ class RetrofitNetworkClient(private val api: ApiService, private val context: Co
             }
         }
         return false
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    override suspend fun getIndustries(dto: Any): Response {
+        if (isConnected() == false) {
+            return Response().apply { resultCode = -1 }
+        }
+        if(dto!is IndustriesSearchRequest){
+            return Response().apply { resultCode = 400 }
+        }
+        return withContext(Dispatchers.IO){
+            try {
+                val response = Response()
+                val result = api.getIndustries()
+                response.apply {
+                    resultCode = 200
+                    resultIndustries = result
+                }
+            }catch(e:Throwable){
+                Response().apply { resultCode = 500 }
+            }
+        }
     }
 }
 

@@ -1,7 +1,8 @@
 package ru.practicum.android.diploma.data.filter.local
 
-interface LocalStorage {
+import ru.practicum.android.diploma.data.dto.filter.FiltersDto
 
-    fun setSalary(salary: String)
-    fun getSalary(): String
+interface LocalStorage {
+    fun doRequest(): FiltersDto
+    fun doWrite(filtersDto: FiltersDto)
 }

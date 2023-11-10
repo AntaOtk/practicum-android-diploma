@@ -23,6 +23,7 @@ import ru.practicum.android.diploma.data.network.RetrofitNetworkClient
 import ru.practicum.android.diploma.domain.ExternalNavigator
 
 
+
 val dataModule = module {
     factory { Gson() }
 
@@ -66,7 +67,13 @@ val dataModule = module {
     }
 
     single<LocalStorage> {
-        SharedPreferensClient(get(), get())
+        SharedPreferensClient(get())
+    }
+
+    single {
+        androidContext().getSharedPreferences(
+            "false", Context.MODE_PRIVATE
+        )
     }
 }
 

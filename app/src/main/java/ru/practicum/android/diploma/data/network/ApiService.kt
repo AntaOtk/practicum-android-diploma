@@ -6,8 +6,9 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 import ru.practicum.android.diploma.BuildConfig
 import ru.practicum.android.diploma.data.dto.detail.FullVacancyDto
+import ru.practicum.android.diploma.data.dto.filter.AreasDto
 import ru.practicum.android.diploma.data.dto.filter.CountryDto
-import ru.practicum.android.diploma.data.dto.search.SearchResponse
+import ru.practicum.android.diploma.data.dto.filter.IndustryDto
 import ru.practicum.android.diploma.data.dto.similar.SearchSimilarResponse
 import ru.practicum.android.diploma.data.filter.RegionListDto
 
@@ -44,4 +45,19 @@ interface ApiService {
 
     @GET("/areas/{area_id}")
     suspend fun getRegionInfo(@Path("area_id") areaId: String): RegionListDto
+
+    @Headers(
+        "Authorization: Bearer ${BuildConfig.HH_ACCESS_TOKEN}",
+        "HH-User-Agent: EmployMe (eenot84@yandex.ru)"
+    )
+    @GET("/areas")
+    suspend fun getAreas(
+    ): List<AreasDto>
+
+    @Headers(
+        "Authorization: Bearer ${BuildConfig.HH_ACCESS_TOKEN}",
+        "HH-User-Agent: EmployMe (eenot84@yandex.ru)"
+    )
+    @GET("/industries")
+    suspend fun getIndustries():List<IndustryDto>
 }
