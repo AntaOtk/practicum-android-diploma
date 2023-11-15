@@ -37,7 +37,7 @@ class DetailInteractorImpl(
         navigator.shareEmail(email)
     }
 
-    override fun shareVacancyUrl(vacancyUrl: String){
+    override fun shareVacancyUrl(vacancyUrl: String) {
         navigator.shareVacancyUrl(vacancyUrl)
     }
 }

@@ -105,5 +105,4 @@ class FilterInteractorImpl(
     override fun getSelectedIndustries(): Industry? {
         return repository.getSelectedIndustry()
     }
-
 }

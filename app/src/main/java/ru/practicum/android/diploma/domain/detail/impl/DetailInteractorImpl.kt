@@ -8,6 +8,4 @@ class DetailInteractorImpl(val repository: DetailRepository) : DetailInteractor 
     override fun getVacancy(): FullVacancy {
         return repository.getVavancy()
     }
-
-
 }

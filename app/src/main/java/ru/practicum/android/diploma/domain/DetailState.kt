@@ -7,7 +7,6 @@ sealed interface DetailState {
     data class Content(
         val vacancy: FullVacancy,
     ) : DetailState
-
     data class Error(
         val errorMessage: String
     ) : DetailState

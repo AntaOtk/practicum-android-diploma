@@ -5,6 +5,10 @@ import com.google.gson.Gson
 import ru.practicum.android.diploma.domain.models.filter.Area
 import ru.practicum.android.diploma.domain.models.filter.Country
 import ru.practicum.android.diploma.domain.models.filter.Industry
+import ru.practicum.android.diploma.util.SALARY_KEY
+import ru.practicum.android.diploma.util.SELECTED_AREA_KEY
+import ru.practicum.android.diploma.util.SELECTED_COUNTRY_KEY
+import ru.practicum.android.diploma.util.SELECTED_INDUSTRY_KEY
 
 class SharedPreferensClient(val gson: Gson, private val sharedPreferences: SharedPreferences) :
     LocalStorage {
@@ -55,11 +59,4 @@ class SharedPreferensClient(val gson: Gson, private val sharedPreferences: Share
         return gson.fromJson(industryJson, Industry::class.java)
     }
 
-    companion object {
-        const val SALARY_KEY = "salary"
-        const val SELECTED_COUNTRY_KEY = "selectedCountry"
-        const val SELECTED_AREA_KEY = "selectedArea"
-        const val SELECTED_INDUSTRY_KEY = "selectedIndustry"
-
-    }
 }

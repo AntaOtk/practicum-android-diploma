@@ -7,14 +7,10 @@ import ru.practicum.android.diploma.domain.models.filter.Industry
 interface FilterRepository {
     fun setSalary(input: String)
     fun getSalary(): String
-
     fun setSelectedCountry(country: Country?)
     fun getSelectedCountry(): Country?
-
     fun setSelectedArea(area: Area?)
     fun getSelectedArea(): Area?
-
     fun getSelectedIndustry(): Industry?
-
     fun setSelectedIndustry(industry: Industry?)
 }
