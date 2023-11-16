@@ -80,5 +80,4 @@ class SelectCountryViewModel(
     fun loadSelectedArea() {
         _selectedArea.value = interactor.getSelectedArea()
     }
-
 }
