@@ -92,6 +92,7 @@ class SettingsFilterFragment : Fragment() {
         }
 
         binding.resetSettingsTextview.setOnClickListener {
+            resetFields()
             viewModel.clearFilters()
         }
 
@@ -123,7 +124,6 @@ class SettingsFilterFragment : Fragment() {
                 binding.industryTextInputEditText.text?.isNotEmpty() ?: false ||
                 binding.salaryEt.text?.isNotEmpty() ?: false ||
                 binding.doNotShowWithoutSalaryCheckBox.isChecked
-
         binding.resetSettingsTextview.isVisible = isAnyFieldNotEmpty
     }
 
