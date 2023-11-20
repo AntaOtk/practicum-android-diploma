@@ -31,7 +31,7 @@ class SimilarRepositoryImpl(
             }
 
             else -> {
-                emit(Resource.Error(resourceProvider.getString(R.string.server_error)))
+                emit(Resource.Error(resourceProvider.getString(R.string.no_internet)))
             }
         }
     }
