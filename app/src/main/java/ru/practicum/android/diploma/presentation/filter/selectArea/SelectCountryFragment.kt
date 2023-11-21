@@ -57,4 +57,5 @@ class SelectCountryFragment : ModelFragment() {
             placeholderMessageText.text = errorText
         }
     }
+
 }

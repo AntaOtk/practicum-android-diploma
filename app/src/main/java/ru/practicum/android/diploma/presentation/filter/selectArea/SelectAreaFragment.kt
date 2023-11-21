@@ -5,10 +5,10 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import androidx.core.view.isVisible
-import ru.practicum.android.diploma.R
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.domain.models.filter.Area
 import ru.practicum.android.diploma.presentation.ModelFragment
 import ru.practicum.android.diploma.presentation.filter.selectArea.adaptor.AreaAdapter

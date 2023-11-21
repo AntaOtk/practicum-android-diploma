@@ -27,7 +27,6 @@ class SelectCountryViewModel(
     private val _selectedArea = MutableLiveData<Area?>()
     val selectedArea: LiveData<Area?> = _selectedArea
 
-
     private fun renderState(state: CountryState) {
         stateLiveData.postValue(state)
     }
@@ -81,4 +80,4 @@ class SelectCountryViewModel(
         _selectedArea.value = interactor.getSelectedArea()
     }
 
-}
+    }
