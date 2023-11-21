@@ -64,14 +64,6 @@ class SettingsFilterFragment : Fragment() {
                 inputText = s?.toString() ?: ""
                 viewModel.checkChanges(inputText)
                 checkFieldsForResetVisibility()
-                if (binding.workPlaceEditText.text?.isNotEmpty() == true) {
-                    binding.workPlaceButton.isVisible = false
-                    binding.workPlaceClear.isVisible = true
-                }
-                if (binding.industryEditText.text?.isNotEmpty() == true) {
-                    binding.industryButton.isVisible = false
-                    binding.industryClear.isVisible = true
-                }
                 if (binding.salaryEt.text.isNotEmpty()) {
                     binding.clearButtonIcon.isVisible = true
                 }
@@ -85,6 +77,7 @@ class SettingsFilterFragment : Fragment() {
             binding.salaryEt.setText("")
             binding.clearButtonIcon.isVisible = false
         }
+
 
         binding.workPlaceClear.setOnClickListener {
             binding.workPlaceEditText.setText("")
@@ -128,7 +121,6 @@ class SettingsFilterFragment : Fragment() {
         binding.resetSettingsTextview.setOnClickListener {
             resetFields()
             viewModel.clearFilters()
-            binding.confirmButton.isVisible = false
         }
 
         binding.doNotShowWithoutSalaryCheckBox.setOnClickListener {
@@ -150,11 +142,17 @@ class SettingsFilterFragment : Fragment() {
             append(countryName)
             append(", ")
             append(areaName)
+            binding.workPlaceButton.isVisible = false
+            binding.workPlaceClear.isVisible = true
         }) else binding.workPlaceEditText.setText(countryName)
         binding.industryEditText.setText(filters.industry?.name ?: "")
         binding.clearButtonIcon.isVisible = !filters.preferSalary.isNullOrEmpty()
         binding.salaryEt.setText(filters.preferSalary)
         binding.doNotShowWithoutSalaryCheckBox.isChecked = filters.isIncludeSalary
+        if (binding.industryEditText.text?.isNotEmpty() == true) {
+            binding.industryButton.isVisible = false
+            binding.industryClear.isVisible = true
+        }
     }
 
     private fun resetFields() {
