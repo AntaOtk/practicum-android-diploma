@@ -101,7 +101,7 @@ class SelectIndustryFragment : ModelFragment() {
         binding.apply {
             RecyclerView.isVisible = false
             placeholderMessage.isVisible = true
-            placeholderMessageImage.setImageResource(R.drawable.fitred_empty)
+            placeholderMessageImage.setImageResource(R.drawable.no_internet_error)
             placeholderMessageText.text = errorText
         }
     }

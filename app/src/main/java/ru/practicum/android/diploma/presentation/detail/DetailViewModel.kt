@@ -59,7 +59,7 @@ class DetailViewModel(
             errorMessage != null -> {
                 renderState(
                     DetailState.Error(
-                        errorMessage = resourceProvider.getString(R.string.server_error)
+                        errorMessage = resourceProvider.getString(R.string.no_internet)
                     )
                 )
             }

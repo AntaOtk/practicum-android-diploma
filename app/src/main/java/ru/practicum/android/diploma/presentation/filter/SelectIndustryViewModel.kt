@@ -49,7 +49,7 @@ class SelectIndustryViewModel(
             }.toMutableList()
             if (filteredList.isEmpty()) filteredIndustriesState.postValue(
                 IndustriesState.Error(
-                    resourceProvider.getString(R.string.empty_filtered_industry)
+                    resourceProvider.getString(R.string.no_internet)
                 )
             ) else
                 filteredIndustriesState.postValue(

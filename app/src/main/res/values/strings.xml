@@ -58,7 +58,7 @@
     <string name="logo">logo</string>
     <string name="empty_filtered_regions">Такого региона нет</string>
     <string name="no_list">Не удалось получить список</string>
-    <string name="empty_filtered_industry">таких отраслей не найдено</string>
+    <string name="empty_filtered_industr">таких отраслей не найдено</string>
     <plurals name="vacancies">
         <item quantity="zero">Найдено %d вакансий</item>
         <item quantity="one">Найдена %d вакансия</item>
