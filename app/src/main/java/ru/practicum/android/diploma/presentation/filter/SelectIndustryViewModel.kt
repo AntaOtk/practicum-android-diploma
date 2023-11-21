@@ -71,14 +71,14 @@ class SelectIndustryViewModel(
             industriesStateLiveData.value =
                 if (filteredIndustries.isNotEmpty()) IndustriesState.DisplayIndustries(
                     filteredIndustries
-                ) else IndustriesState.Error(
+                ) else  IndustriesState.Error(
                     resourceProvider.getString(
                         R.string.no_list
                     )
                 )
 
-        } else {
-            IndustriesState.Error(resourceProvider.getString(R.string.no_list))
+        } else { industriesStateLiveData.postValue(IndustriesState.Error(resourceProvider.getString(R.string.no_list)))
+
         }
     }
 
@@ -109,4 +109,7 @@ class SelectIndustryViewModel(
         )
     }
 
+    fun clearInputText() {
+        filterIndustries("")
+    }
 }
