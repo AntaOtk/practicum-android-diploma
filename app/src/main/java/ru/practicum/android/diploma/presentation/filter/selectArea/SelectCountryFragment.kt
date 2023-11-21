@@ -41,7 +41,6 @@ class SelectCountryFragment : ModelFragment() {
                 viewModel.onClicked(country)
                 findNavController().popBackStack()
             }
-
             binding.RecyclerView.apply {
                 layoutManager = LinearLayoutManager(requireContext())
                 adapter = countryAdapter
