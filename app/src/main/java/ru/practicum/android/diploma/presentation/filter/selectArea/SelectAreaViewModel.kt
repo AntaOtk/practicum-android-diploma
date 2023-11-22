@@ -25,8 +25,6 @@ class SelectAreaViewModel(
     private val areasFilterStateLiveData = MutableLiveData<AreasState>()
     fun observeFilterAreasState(): LiveData<AreasState> = areasFilterStateLiveData
 
-    private val selectedArea = MutableLiveData<Area?>()
-
     // Добавленное поле для хранения отфильтрованных регионов
     private var filteredAreas: ArrayList<Area> = arrayListOf()
 
@@ -40,7 +38,7 @@ class SelectAreaViewModel(
                 areasUseCase.getAreas(it).collect { result ->
                     processResult(result)
                 }
-            }
+            } ?: areasStateLiveData.postValue(AreasState.Error(resourceProvider.getString(R.string.no_list)))
         }
     }
 
@@ -72,8 +70,7 @@ class SelectAreaViewModel(
                 )
             )
         } else {
-            areasStateLiveData.value =
-                AreasState.Error(resourceProvider.getString(R.string.no_list))
+            areasStateLiveData.postValue(AreasState.Error(resourceProvider.getString(R.string.no_list)))
         }
     }
 
@@ -105,10 +102,10 @@ class SelectAreaViewModel(
         val selectedCountry = areasUseCase.getSelectedCountry()
         return selectedCountry?.id
     }
-
-    fun loadSelectedArea() {
-        selectedArea.value = areasUseCase.getSelectedArea()
+    fun clearInputText() {
+        filterAreas("")
     }
+
 
 
 }

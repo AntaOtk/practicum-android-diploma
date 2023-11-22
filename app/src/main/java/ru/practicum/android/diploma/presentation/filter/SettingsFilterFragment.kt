@@ -81,14 +81,11 @@ class SettingsFilterFragment : Fragment() {
         }
 
         binding.workPlaceClear.setOnClickListener {
-            binding.workPlaceEditText.setText("")
             binding.workPlaceClear.isVisible = false
-            viewModel.clearCountry()
             viewModel.clearArea()
         }
 
         binding.industryClear.setOnClickListener {
-            binding.industryEditText.setText("")
             binding.industryClear.isVisible = false
             viewModel.clearIndustry()
         }
@@ -138,6 +135,7 @@ class SettingsFilterFragment : Fragment() {
             binding.workPlaceEditText.setText(countryName)
             binding.workPlaceClear.isVisible = true
         } else {
+            binding.workPlaceEditText.setText("")
             binding.workPlaceClear.isVisible = false
         }
         if (!filters.industries.isNullOrEmpty()) {
@@ -148,6 +146,7 @@ class SettingsFilterFragment : Fragment() {
             binding.industryEditText.setText(sb.toString())
             binding.industryClear.isVisible = true
         } else {
+            binding.industryEditText.setText("")
             binding.industryClear.isVisible = false
         }
         binding.clearButtonIcon.isVisible = !filters.preferSalary.isNullOrEmpty()

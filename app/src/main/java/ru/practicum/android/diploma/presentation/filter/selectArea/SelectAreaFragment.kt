@@ -47,6 +47,13 @@ class SelectAreaFragment : ModelFragment() {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = areasAdapter
         }
+
+        binding.clearButtonIcon.setOnClickListener {
+            if (binding.searchEt.text.isNotEmpty()) {
+                binding.searchEt.setText("")
+                viewModel.clearInputText()
+            }
+        }
     }
 
     private fun setupSearchInput() {
@@ -66,6 +73,11 @@ class SelectAreaFragment : ModelFragment() {
                 count: Int
             ) {
                 viewModel.filterAreas(s?.toString() ?: "")
+                if (binding.searchEt.text.isNotEmpty()) {
+                    binding.clearButtonIcon.setImageResource(R.drawable.ic_clear_et)
+                } else {
+                    binding.clearButtonIcon.setImageResource(R.drawable.ic_search)
+                }
             }
 
             override fun afterTextChanged(editable: Editable?) {
@@ -86,9 +98,9 @@ class SelectAreaFragment : ModelFragment() {
 
     private fun displayError(errorText: String) {
         binding.apply {
-            RecyclerView.isVisible = true
-            placeholderMessage.isVisible = false
-            placeholderMessageImage.setImageResource(R.drawable.search_placeholder_nothing_found)
+            RecyclerView.isVisible = false
+            placeholderMessage.isVisible = true
+            placeholderMessageImage.setImageResource(R.drawable.fitred_empty)
             placeholderMessageText.text = errorText
         }
     }

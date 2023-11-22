@@ -53,7 +53,7 @@ class SelectCountryViewModel(
             errorMessage != null -> {
                 renderState(
                     CountryState.Error(
-                        resourceProvider.getString(R.string.no_connection)
+                        resourceProvider.getString(R.string.no_list)
                     )
                 )
             }

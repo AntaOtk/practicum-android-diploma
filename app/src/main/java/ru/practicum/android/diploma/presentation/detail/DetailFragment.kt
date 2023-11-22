@@ -162,7 +162,7 @@ class DetailFragment : Fragment() {
         binding.progressBar.isVisible = false
         binding.content.isVisible = false
         binding.placeholderMessage.isVisible = true
-        binding.placeholderMessageImage.setImageResource(R.drawable.server_error)
+        binding.placeholderMessageImage.setImageResource(R.drawable.no_internet_error)
         binding.placeholderMessageText.text = errorMessage
     }
 

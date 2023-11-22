@@ -19,9 +19,6 @@ class DetailViewModel(
     private val favouriteInteractor: FavouriteInteractor
 ) : ViewModel() {
 
-    private val _vacancyState = MutableLiveData<DetailState>()
-    val vacancyState: LiveData<DetailState> get() = _vacancyState
-
     private lateinit var vacancy: FullVacancy
     private var favouriteStateLiveData = MutableLiveData(false)
     fun observedFavouriteState(): LiveData<Boolean> = favouriteStateLiveData
@@ -59,7 +56,7 @@ class DetailViewModel(
             errorMessage != null -> {
                 renderState(
                     DetailState.Error(
-                        errorMessage = resourceProvider.getString(R.string.server_error)
+                        errorMessage = resourceProvider.getString(R.string.no_internet)
                     )
                 )
             }

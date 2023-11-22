@@ -10,8 +10,6 @@ import ru.practicum.android.diploma.domain.models.filter.Filters
 
 class FilterViewModel(private val interactor: FilterInteractor) : ViewModel() {
 
-
-
     private val changesLiveData = MutableLiveData(false)
     fun observeChanges(): LiveData<Boolean> = changesLiveData
 
@@ -19,18 +17,21 @@ class FilterViewModel(private val interactor: FilterInteractor) : ViewModel() {
     fun observeFilters(): LiveData<Filters> = filtersLiveData
 
     init {
-        getFilters()
-    }
-    fun getFilters() {
         viewModelScope.launch {
-            val filters = interactor.getFilters()
-            if (filtersLiveData.value != null) changesLiveData.postValue(true)
-            renderFilters(filters)
+            getFilters()
         }
     }
 
-    fun checkChanges(inputText: String){
-        if (inputText != (filtersLiveData.value?.preferSalary ?: "")) changesLiveData.postValue(true)
+    fun getFilters() {
+        val filters = interactor.getFilters()
+        if (filtersLiveData.value != null) changesLiveData.postValue(true)
+        renderFilters(filters)
+    }
+
+    fun checkChanges(inputText: String) {
+        if (inputText != (filtersLiveData.value?.preferSalary
+                ?: "")
+        ) changesLiveData.postValue(true)
     }
 
 
@@ -47,19 +48,20 @@ class FilterViewModel(private val interactor: FilterInteractor) : ViewModel() {
         interactor.clearFilters()
         getFilters()
     }
-    fun setSalaryStatus(isChecked:Boolean) {
+
+    fun setSalaryStatus(isChecked: Boolean) {
         interactor.setSalaryStatus(isChecked)
         changesLiveData.postValue(true)
-    }
-    fun clearCountry() {
-        interactor.removeSelectedCountry()
     }
 
     fun clearArea() {
         interactor.removeSelectedArea()
+        interactor.removeSelectedCountry()
+        getFilters()
     }
 
     fun clearIndustry() {
         interactor.removeSelectedIndustry()
+        getFilters()
     }
 }
