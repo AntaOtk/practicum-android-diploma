@@ -5,6 +5,7 @@ import ru.practicum.android.diploma.data.DetailRepositoryImpl
 import ru.practicum.android.diploma.data.FavouriteRepositoryImpl
 import ru.practicum.android.diploma.data.SearchRepositoryImpl
 import ru.practicum.android.diploma.data.SimilarRepositoryImpl
+import ru.practicum.android.diploma.data.VacancyEntityMapper
 import ru.practicum.android.diploma.data.VacancyMapper
 import ru.practicum.android.diploma.data.filter.DirectoryRepositoryImpl
 import ru.practicum.android.diploma.data.filter.FilterRepositoryImpl
@@ -13,7 +14,7 @@ import ru.practicum.android.diploma.domain.api.DetailRepository
 import ru.practicum.android.diploma.domain.api.DirectoryRepository
 import ru.practicum.android.diploma.domain.api.SearchRepository
 import ru.practicum.android.diploma.domain.favorite.FavouriteRepository
-import ru.practicum.android.diploma.domain.models.filter.FilterRepository
+import ru.practicum.android.diploma.domain.filter.FilterRepository
 import ru.practicum.android.diploma.domain.similar.SimilarRepository
 
 val repositoryModule = module {
@@ -24,5 +25,6 @@ val repositoryModule = module {
     single<FilterRepository> { FilterRepositoryImpl(get()) }
     single<FavouriteRepository> { FavouriteRepositoryImpl(get(), get()) }
     single { VacancyMapper() }
+    single { VacancyEntityMapper(get()) }
     single { FiltersMapper() }
 }

@@ -12,9 +12,12 @@
     <dimen name="margin_8">8dp</dimen>
     <dimen name="margin_12">12dp</dimen>
     <dimen name="margin_2">2dp</dimen>
+    <dimen name="margin_4">4dp</dimen>
     <dimen name="margin_48">48dp</dimen>
     <dimen name="margin_40">40dp</dimen>
     <dimen name="margin_35">35dp</dimen>
+    <dimen name="margin_16">16dp</dimen>
+    <dimen name="margin_171">171dp</dimen>
 
     <dimen name="padding_8">8dp</dimen>
     <dimen name="padding_24">24dp</dimen>
@@ -40,7 +43,11 @@
     <item name="dimens_16" type="dimen">16dp</item>
     <!-- View Size -->
     <dimen name="edittext_vertical_size">56dp</dimen>
-
     <dimen name="margin_24dp">24dp</dimen>
+    <dimen name="my_button_corner_radius">12dp</dimen>
+    <dimen name="error">200dp</dimen>
+    <dimen name="logo_size">48dp</dimen>
+    <dimen name="placeholder_top">140dp</dimen>
+    <dimen name="divider">1dp</dimen>
 
 </resources>

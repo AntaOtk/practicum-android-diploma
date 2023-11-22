@@ -1,63 +1,55 @@
 package ru.practicum.android.diploma.presentation.similar
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
-import ru.practicum.android.diploma.databinding.FragmentSimilarVacanciesBinding
 import ru.practicum.android.diploma.domain.SearchState
 import ru.practicum.android.diploma.domain.models.Vacancy
-import ru.practicum.android.diploma.presentation.detail.DetailFragment
+import ru.practicum.android.diploma.presentation.ModelFragment
+import ru.practicum.android.diploma.presentation.SalaryPresenter
 import ru.practicum.android.diploma.presentation.search.SearchAdapter
-import ru.practicum.android.diploma.presentation.search.SearchFragment
+import ru.practicum.android.diploma.util.CLICK_DEBOUNCE_DELAY_MILLIS
 import ru.practicum.android.diploma.util.debounce
 
-class SimilarVacanciesFragment : Fragment() {
-    val viewModel by viewModel<SimilarViewModel>()
-    private var _binding: FragmentSimilarVacanciesBinding? = null
-    private val binding get() = _binding!!
+class SimilarVacanciesFragment : ModelFragment() {
+    private val viewModel by viewModel<SimilarViewModel>()
+    private val salaryPresenter: SalaryPresenter by inject()
     lateinit var onItemClickDebounce: (Vacancy) -> Unit
     private val vacancies = mutableListOf<Vacancy>()
-    private val adapter = SearchAdapter(vacancies) { vacanciy ->
-        onItemClickDebounce(vacanciy)
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentSimilarVacanciesBinding.inflate(inflater, container, false)
-        return binding.root
+    private val adapter = SearchAdapter(vacancies, salaryPresenter) { vacancy ->
+        onItemClickDebounce(vacancy)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.similarVacanciesRecyclerView.adapter = adapter
+        binding.toolbarInclude.headerTitle.text = getString(R.string.similar_vacancies)
+        binding.container.isVisible = false
+        binding.RecyclerView.adapter = adapter
         onItemClickDebounce = debounce(
-            SearchFragment.CLICK_DEBOUNCE_DELAY_MILLIS,
+            CLICK_DEBOUNCE_DELAY_MILLIS,
             viewLifecycleOwner.lifecycleScope,
             false
         ) { vacancy ->
-            DetailFragment.addArgs(vacancy.id)
-            findNavController().navigate(R.id.action_similarVacanciesFragment_to_detailFragment)
+            val bundle = bundleOf("vacancyId" to vacancy.id)
+            findNavController().navigate(
+                R.id.action_similarVacanciesFragment_to_detailFragment,
+                bundle
+            )
         }
+        val vacancyId = arguments?.getString("vacancyId") ?: ""
         viewModel.searchVacancy(vacancyId)
-        binding.similarVacanciesBackArrowImageview.setOnClickListener {
-            findNavController().popBackStack()
-        }
-
         viewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
         }
     }
 
-    fun render(state: SearchState) {
+    private fun render(state: SearchState) {
         when (state) {
             is SearchState.Loading -> showLoading()
             is SearchState.Content -> showContent(state.vacancies)
@@ -68,13 +60,13 @@ class SimilarVacanciesFragment : Fragment() {
 
     private fun showLoading() {
         binding.progressBar.isVisible = true
-        binding.similarVacanciesRecyclerView.isVisible = false
+        binding.RecyclerView.isVisible = false
         binding.placeholderMessage.isVisible = false
     }
 
     private fun showContent(searchVacancies: List<Vacancy>) {
         binding.progressBar.isVisible = false
-        binding.similarVacanciesRecyclerView.isVisible = true
+        binding.RecyclerView.isVisible = true
         binding.placeholderMessage.isVisible = false
         vacancies.clear()
         vacancies.addAll(searchVacancies)
@@ -83,28 +75,20 @@ class SimilarVacanciesFragment : Fragment() {
 
     private fun showEmpty(message: String) {
         binding.progressBar.isVisible = false
-        binding.similarVacanciesRecyclerView.isVisible = false
+        binding.RecyclerView.isVisible = false
         binding.placeholderMessage.isVisible = true
         binding.placeholderMessageImage.setImageResource(R.drawable.search_placeholder_nothing_found)
         binding.placeholderMessageText.text = message
     }
 
     private fun showError(errorMessage: String) {
-        binding.progressBar.isVisible = false
-        binding.similarVacanciesRecyclerView.isVisible = false
-        binding.placeholderMessage.isVisible = true
-        binding.placeholderMessageText.text = errorMessage
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
-    }
-
-    companion object {
-        var vacancyId: String = ""
-        fun addArgs(id: String) {
-            vacancyId = id
+        binding.apply {
+            progressBar.isVisible = false
+            RecyclerView.isVisible = false
+            placeholderMessage.isVisible = true
+            if (errorMessage == getString(R.string.no_internet)) placeholderMessageImage.setImageResource(R.drawable.no_internet_error)
+            else placeholderMessageImage.setImageResource(R.drawable.server_error2)
+                placeholderMessageText.text = errorMessage
         }
     }
 }

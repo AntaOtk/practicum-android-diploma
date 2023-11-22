@@ -1,15 +1,16 @@
 package ru.practicum.android.diploma.ui.root
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import ru.practicum.android.diploma.BuildConfig
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.ActivityRootBinding
 
-class RootActivity : AppCompatActivity() {
+class RootActivity : AppCompatActivity(), BottomNavigationVisibilityListener {
 
     private var _binding: ActivityRootBinding? = null
     private val binding get() = _binding!!
@@ -26,19 +27,20 @@ class RootActivity : AppCompatActivity() {
             when (destination.id) {
                 R.id.searchFragment, R.id.favouriteFragment, R.id.teamFragment -> {
                     binding.bottomNavigationView.isVisible = true
+                    binding.divider.isVisible = true
                 }
                 R.id.detailFragment, R.id.similarVacanciesFragment -> {
                     binding.bottomNavigationView.isVisible = false
+                    binding.divider.isVisible = false
                 }
             }
         }
-        //Пример использования access token для HeadHunter API
-        // networkRequestExample(accessToken = BuildConfig.HH_ACCESS_TOKEN)
-
     }
 
-    /* private fun networkRequestExample(accessToken: String) {
-         // ...
-     } */
-
+    override fun setBottomNavigationVisibility(isVisible: Boolean) {
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        val divider = findViewById<View>(R.id.divider)
+        bottomNavigationView.visibility = if (isVisible) View.VISIBLE else View.GONE
+        divider.visibility = if (isVisible) View.VISIBLE else View.GONE
+    }
 }

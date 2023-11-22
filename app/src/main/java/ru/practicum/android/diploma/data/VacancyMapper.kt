@@ -1,10 +1,10 @@
 package ru.practicum.android.diploma.data
 
+import ru.practicum.android.diploma.data.dto.Language
+import ru.practicum.android.diploma.data.dto.License
+import ru.practicum.android.diploma.data.dto.SkillName
 import ru.practicum.android.diploma.data.dto.VacancyDto
 import ru.practicum.android.diploma.data.dto.detail.FullVacancyDto
-import ru.practicum.android.diploma.data.dto.detail.Language
-import ru.practicum.android.diploma.data.dto.detail.License
-import ru.practicum.android.diploma.data.dto.detail.SkillName
 import ru.practicum.android.diploma.domain.models.Contact
 import ru.practicum.android.diploma.domain.models.Phone
 import ru.practicum.android.diploma.domain.models.Salary
@@ -44,45 +44,28 @@ class VacancyMapper {
             vacancyDto.alternate_url,
             vacancyDto.brandedDescription,
             Contact(
-                vacancyDto.contacts?.name,
                 vacancyDto.contacts?.email,
+                vacancyDto.contacts?.name,
                 phoneFromDto(vacancyDto.contacts?.phones)
             ),
             vacancyDto.description,
             vacancyDto.experience?.name.toString(),
             vacancyDto.employment?.name.toString(),
             if (vacancyDto.keySkills != null) contentMap(vacancyDto.keySkills).toBulletedList() else "",
-            addRequirements(vacancyDto)
         )
     }
 
-    private fun phoneFromDto(phones: List<ru.practicum.android.diploma.data.dto.detail.Phone>?): List<Phone> {
-        return if (!phones.isNullOrEmpty() ) phones.map { mapPhones(it) } else mutableListOf()
+    private fun phoneFromDto(phones: List<ru.practicum.android.diploma.data.dto.Phone>?): List<Phone> {
+        return if (!phones.isNullOrEmpty()) phones.map { mapPhones(it) } else mutableListOf()
     }
 
-    fun mapPhones(phoneDto: ru.practicum.android.diploma.data.dto.detail.Phone): Phone {
+    private fun mapPhones(phoneDto: ru.practicum.android.diploma.data.dto.Phone): Phone {
         return Phone(
             phoneDto.city,
-        phoneDto.comment,
-        phoneDto.country,
-        phoneDto.number
+            phoneDto.comment,
+            phoneDto.country,
+            phoneDto.number
         )
-    }
-
-    private fun addRequirements(fullVacancyDto: FullVacancyDto): String {
-        var requirements = ""
-        if (!fullVacancyDto.driverLicense.isNullOrEmpty()) {
-            requirements += "Права категории"
-            //requirements += contentMap(fullVacancyDto.driverLicense)
-            requirements += "\n"
-        }
-        if (!fullVacancyDto.languages.isNullOrEmpty()) {
-            requirements += "Знание язаков: "
-            //requirements += contentMap(fullVacancyDto.languages)
-            requirements += "\n"
-
-        }
-        return requirements
     }
 
     private fun <T> contentMap(listDto: List<T>): List<String> {

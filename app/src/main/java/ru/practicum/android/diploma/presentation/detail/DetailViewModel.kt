@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.data.ResourceProvider
-import ru.practicum.android.diploma.domain.DetailInteractor
+import ru.practicum.android.diploma.domain.detail.DetailInteractor
 import ru.practicum.android.diploma.domain.DetailState
 import ru.practicum.android.diploma.domain.favorite.FavouriteInteractor
 import ru.practicum.android.diploma.domain.models.Phone
@@ -56,7 +56,7 @@ class DetailViewModel(
             errorMessage != null -> {
                 renderState(
                     DetailState.Error(
-                        errorMessage = resourceProvider.getString(R.string.no_connection)
+                        errorMessage = resourceProvider.getString(R.string.server_error)
                     )
                 )
             }

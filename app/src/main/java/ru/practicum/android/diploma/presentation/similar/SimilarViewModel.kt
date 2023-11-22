@@ -22,6 +22,9 @@ class SimilarViewModel(
         stateLiveData.postValue(state)
     }
 
+    init {
+        searchVacancy(searchText = String())
+    }
     fun searchVacancy(searchText: String) {
         if (searchText.isNotEmpty()) {
             renderState(SearchState.Loading)
@@ -44,9 +47,7 @@ class SimilarViewModel(
         when {
             errorMessage != null -> {
                 renderState(
-                    SearchState.Error(
-                        errorMessage = resourceProvider.getString(R.string.no_connection)
-                    )
+                    SearchState.Error(errorMessage)
                 )
             }
 

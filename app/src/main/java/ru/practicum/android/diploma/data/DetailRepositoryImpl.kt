@@ -4,11 +4,12 @@ import android.util.Log
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import ru.practicum.android.diploma.R
-import ru.practicum.android.diploma.data.dto.detail.DetailRequest
 import ru.practicum.android.diploma.data.dto.detail.FullVacancyDto
 import ru.practicum.android.diploma.domain.api.DetailRepository
 import ru.practicum.android.diploma.domain.models.detail.FullVacancy
+import ru.practicum.android.diploma.util.ERROR
 import ru.practicum.android.diploma.util.Resource
+import ru.practicum.android.diploma.util.SUCCESS
 
 class DetailRepositoryImpl(
     private val networkClient: NetworkClient,
@@ -16,7 +17,7 @@ class DetailRepositoryImpl(
     private val mapper: VacancyMapper,
 ) : DetailRepository {
     override fun getVacancy(id: String): Flow<Resource<FullVacancy>> = flow {
-        val response = networkClient.doRequest(DetailRequest(id))
+        val response = networkClient.doDetailRequest(id)
         Log.d("vacancyResponse", "Response: ${response.resultCode}")
         when (response.resultCode) {
             ERROR -> {
@@ -36,11 +37,5 @@ class DetailRepositoryImpl(
             }
         }
     }
-
-    companion object {
-        const val ERROR = -1
-        const val SUCCESS = 200
-    }
-
 }
 
