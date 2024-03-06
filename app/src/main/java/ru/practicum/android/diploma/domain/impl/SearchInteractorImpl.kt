@@ -17,9 +17,9 @@ class SearchInteractorImpl(
         val filters = Filters(
             filterRepository.getSelectedCountry(),
             filterRepository.getSelectedArea(),
-            null,
+            filterRepository.getSelectedIndustries(),
             filterRepository.getSalary(),
-            true
+            filterRepository.getCheckedStatus()
         )
         return repository.searchVacancies(query, filters, pageCount).map { result ->
             when (result) {
@@ -32,5 +32,13 @@ class SearchInteractorImpl(
                 }
             }
         }
+    }
+
+    override fun checkFilters(): Boolean {
+        return filterRepository.getCheckedStatus() ||
+                filterRepository.getSelectedCountry() != null ||
+                filterRepository.getSelectedArea() != null ||
+                !filterRepository.getSelectedIndustries().isNullOrEmpty() ||
+                filterRepository.getSalary().isNotEmpty()
     }
 }

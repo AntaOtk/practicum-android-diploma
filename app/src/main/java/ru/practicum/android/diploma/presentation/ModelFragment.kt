@@ -31,8 +31,8 @@ open class ModelFragment : Fragment() {
         binding.toolbarInclude.share.isVisible = false
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         _binding = null
     }
 }

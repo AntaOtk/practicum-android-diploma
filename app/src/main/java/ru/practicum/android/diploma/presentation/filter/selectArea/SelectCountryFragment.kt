@@ -41,7 +41,6 @@ class SelectCountryFragment : ModelFragment() {
                 viewModel.onClicked(country)
                 findNavController().popBackStack()
             }
-
             binding.RecyclerView.apply {
                 layoutManager = LinearLayoutManager(requireContext())
                 adapter = countryAdapter
@@ -53,8 +52,9 @@ class SelectCountryFragment : ModelFragment() {
         binding.apply {
             RecyclerView.visibility = View.INVISIBLE
             placeholderMessage.visibility = View.VISIBLE
-            placeholderMessageImage.setImageResource(R.drawable.search_placeholder_nothing_found)
+            placeholderMessageImage.setImageResource(R.drawable.fitred_empty)
             placeholderMessageText.text = errorText
         }
     }
+
 }

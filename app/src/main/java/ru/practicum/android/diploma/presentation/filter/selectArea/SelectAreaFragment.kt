@@ -5,10 +5,10 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import androidx.core.view.isVisible
-import ru.practicum.android.diploma.R
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.domain.models.filter.Area
 import ru.practicum.android.diploma.presentation.ModelFragment
 import ru.practicum.android.diploma.presentation.filter.selectArea.adaptor.AreaAdapter
@@ -18,7 +18,10 @@ class SelectAreaFragment : ModelFragment() {
 
     private val viewModel: SelectAreaViewModel by viewModel()
     private val listArea = mutableListOf<Area>()
-    private var areasAdapter: AreaAdapter? = null
+    private lateinit var clickFunction: (Area) -> Unit
+    private var areasAdapter = AreaAdapter(listArea) { area ->
+        clickFunction(area)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -36,6 +39,21 @@ class SelectAreaFragment : ModelFragment() {
             }
         }
         setupSearchInput()
+        clickFunction = { area ->
+            viewModel.onAreaClicked(area)
+            findNavController().popBackStack()
+        }
+        binding.RecyclerView.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = areasAdapter
+        }
+
+        binding.clearButtonIcon.setOnClickListener {
+            if (binding.searchEt.text.isNotEmpty()) {
+                binding.searchEt.setText("")
+                viewModel.clearInputText()
+            }
+        }
     }
 
     private fun setupSearchInput() {
@@ -55,6 +73,11 @@ class SelectAreaFragment : ModelFragment() {
                 count: Int
             ) {
                 viewModel.filterAreas(s?.toString() ?: "")
+                if (binding.searchEt.text.isNotEmpty()) {
+                    binding.clearButtonIcon.setImageResource(R.drawable.ic_clear_et)
+                } else {
+                    binding.clearButtonIcon.setImageResource(R.drawable.ic_search)
+                }
             }
 
             override fun afterTextChanged(editable: Editable?) {
@@ -68,31 +91,16 @@ class SelectAreaFragment : ModelFragment() {
             RecyclerView.visibility = View.VISIBLE
             placeholderMessage.visibility = View.GONE
         }
-        if (areasAdapter == null) {
-            areasAdapter = AreaAdapter(listArea) { area ->
-                viewModel.onAreaClicked(area)
-                val position = areas.indexOf(area)
-                areas[position] = area.copy(isChecked = !area.isChecked)
-                viewModel.onAreaClicked(area)
-                viewModel.loadSelectedArea()
-                findNavController().popBackStack()
-                areasAdapter?.notifyItemChanged(position)
-            }
-            binding.RecyclerView.apply {
-                layoutManager = LinearLayoutManager(requireContext())
-                adapter = areasAdapter
-            }
-        }
         listArea.clear()
         listArea.addAll(areas)
-        areasAdapter!!.notifyDataSetChanged()
+        areasAdapter.notifyDataSetChanged()
     }
 
     private fun displayError(errorText: String) {
         binding.apply {
-            RecyclerView.isVisible = true
-            placeholderMessage.isVisible = false
-            placeholderMessageImage.setImageResource(R.drawable.search_placeholder_nothing_found)
+            RecyclerView.isVisible = false
+            placeholderMessage.isVisible = true
+            placeholderMessageImage.setImageResource(R.drawable.fitred_empty)
             placeholderMessageText.text = errorText
         }
     }
@@ -101,7 +109,7 @@ class SelectAreaFragment : ModelFragment() {
         binding.apply {
             RecyclerView.isVisible = false
             placeholderMessage.isVisible = true
-            placeholderMessageImage.setImageResource(R.drawable.fitred_empty)
+            placeholderMessageImage.setImageResource(R.drawable.search_placeholder_nothing_found)
             placeholderMessageText.text = errorText
         }
     }

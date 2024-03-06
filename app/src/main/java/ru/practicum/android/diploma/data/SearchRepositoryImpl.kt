@@ -8,7 +8,6 @@ import ru.practicum.android.diploma.domain.api.SearchRepository
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.domain.models.filter.Filters
 import ru.practicum.android.diploma.util.ERROR
-import ru.practicum.android.diploma.util.PER_PAGE
 import ru.practicum.android.diploma.util.Resource
 import ru.practicum.android.diploma.util.SUCCESS
 
@@ -17,17 +16,13 @@ class SearchRepositoryImpl(
     private val resourceProvider: ResourceProvider,
     private val mapper: VacancyMapper,
 ) : SearchRepository {
-    override fun searchVacancies(query: String, filters: Filters, pageCount:Int): Flow<Resource<List<Vacancy>>> =
+    override fun searchVacancies(
+        query: String,
+        filters: Filters,
+        pageCount: Int
+    ): Flow<Resource<List<Vacancy>>> =
         flow {
-            val options: HashMap<String, String> = HashMap()
-            options["text"] = query
-            options["page"] = pageCount.toString()
-            options["per_page"] = PER_PAGE.toString()
-            if (filters.area != null) options["area"] = filters.area.id else if (filters.country != null) options["area"] = filters.country.id
-            if (filters.industry != null) options["industry"] = filters.industry.id
-            if (filters.isIncludeSalary && !filters.preferSalary.isNullOrEmpty()) options["salary"] =
-                filters.preferSalary
-            val response = networkClient.doSearchRequest(options)
+            val response = networkClient.doSearchRequest(query, filters, pageCount)
             when (response.resultCode) {
                 ERROR -> {
                     emit(Resource.Error(resourceProvider.getString(R.string.no_internet)))

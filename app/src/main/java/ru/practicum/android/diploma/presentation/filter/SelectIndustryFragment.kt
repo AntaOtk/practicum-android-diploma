@@ -11,13 +11,14 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.domain.models.filter.Industry
 import ru.practicum.android.diploma.presentation.ModelFragment
-import ru.practicum.android.diploma.presentation.filter.chooseArea.state.IndustriesState
-import ru.practicum.android.diploma.presentation.filter.selectArea.adaptor.IndystryAdapter
+import ru.practicum.android.diploma.presentation.filter.selectArea.adaptor.IndustryAdapter
+import ru.practicum.android.diploma.presentation.filter.selectArea.state.IndustriesState
 
 class SelectIndustryFragment : ModelFragment() {
     private val viewModel by viewModel<SelectIndustryViewModel>()
     private val listIndustry = mutableListOf<Industry>()
-    private var industriesAdapter: IndystryAdapter? = null
+    private var industriesAdapter: IndustryAdapter? = null
+    private var inputText: String = ""
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -35,9 +36,23 @@ class SelectIndustryFragment : ModelFragment() {
                 is IndustriesState.Error -> displayFilterError(state.errorText)
             }
         }
+        viewModel.observeSelectedIndustry().observe(viewLifecycleOwner) {
+            binding.selectButton.isVisible = !it.isNullOrEmpty()
+        }
+
         setupSearchInput()
-        viewModel.initScreen()
         viewModel.loadSelectedIndustry()
+        binding.selectButton.setOnClickListener {
+            viewModel.setIndustries()
+            findNavController().popBackStack()
+        }
+
+        binding.clearButtonIcon.setOnClickListener {
+            if (binding.searchEt.text.isNotEmpty()) {
+                binding.searchEt.setText("")
+                viewModel.clearInputText()
+            }
+        }
     }
 
     private fun setupSearchInput() {
@@ -48,7 +63,6 @@ class SelectIndustryFragment : ModelFragment() {
                 count: Int,
                 after: Int
             ) {
-                // No implementation needed
             }
 
             override fun onTextChanged(
@@ -57,32 +71,33 @@ class SelectIndustryFragment : ModelFragment() {
                 before: Int,
                 count: Int
             ) {
-                // No implementation needed
+                inputText = charSequence?.toString() ?: ""
+                viewModel.filterIndustries(inputText)
+                if (binding.searchEt.text.isNotEmpty()) {
+                    binding.clearButtonIcon.setImageResource(R.drawable.ic_clear_et)
+                } else {
+                    binding.clearButtonIcon.setImageResource(R.drawable.ic_search)
+                }
             }
 
             override fun afterTextChanged(editable: Editable?) {
-                editable?.toString()?.let { query ->
-                    viewModel.filterIndustries(query)
-                }
             }
         })
     }
 
 
-    private fun displayIndustries(industries: ArrayList<Industry>) {
+    private fun displayIndustries(industries: List<Industry>) {
         binding.apply {
             RecyclerView.visibility = View.VISIBLE
             placeholderMessage.visibility = View.GONE
         }
         if (industriesAdapter == null) {
-            industriesAdapter = IndystryAdapter(listIndustry) { industry ->
-                viewModel.onIndustryClicked(industry)
-                val position = industries.indexOf(industry)
-                industries[position] = industry.copy(isChecked = !industry.isChecked)
-                viewModel.onIndustryClicked(industry)
-                findNavController().popBackStack()
-                industriesAdapter?.notifyItemChanged(position)
-            }
+            industriesAdapter =
+                IndustryAdapter(listIndustry as ArrayList<Industry>) { industry, position ->
+                    viewModel.onIndustryClicked(industry, !industry.isChecked)
+                    listIndustry[position] = industry.copy(isChecked = !industry.isChecked)
+                    industriesAdapter?.notifyItemChanged(position)
+                }
             binding.RecyclerView.apply {
                 layoutManager = LinearLayoutManager(requireContext())
                 adapter = industriesAdapter
@@ -95,9 +110,9 @@ class SelectIndustryFragment : ModelFragment() {
 
     private fun displayError(errorText: String) {
         binding.apply {
-            RecyclerView.isVisible = true
-            placeholderMessage.isVisible = false
-            placeholderMessageImage.setImageResource(R.drawable.search_placeholder_nothing_found)
+            RecyclerView.isVisible = false
+            placeholderMessage.isVisible = true
+            placeholderMessageImage.setImageResource(R.drawable.fitred_empty)
             placeholderMessageText.text = errorText
         }
     }
@@ -106,7 +121,7 @@ class SelectIndustryFragment : ModelFragment() {
         binding.apply {
             RecyclerView.isVisible = false
             placeholderMessage.isVisible = true
-            placeholderMessageImage.setImageResource(R.drawable.fitred_empty)
+            placeholderMessageImage.setImageResource(R.drawable.search_placeholder_nothing_found)
             placeholderMessageText.text = errorText
         }
     }

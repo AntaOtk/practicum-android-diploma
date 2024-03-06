@@ -31,6 +31,25 @@ class SearchViewModel(
 
     private val stateNextLiveData = MutableLiveData<SearchState>()
     fun observeNextState(): LiveData<SearchState> = stateNextLiveData
+
+    private val _filtersApplied = MutableLiveData<Boolean>()
+
+    val filtersApplied: LiveData<Boolean>
+        get() = _filtersApplied
+
+    fun updateFilters() {
+        _filtersApplied.value = checkFilters()
+    }
+
+    fun observeFilters(): LiveData<Boolean> {
+        return filtersApplied
+    }
+
+    init {
+        updateFilters()
+        searchDebounce(changedText = String())
+    }
+
     private fun renderState(state: SearchState) {
         stateLiveData.postValue(state)
     }
@@ -43,9 +62,6 @@ class SearchViewModel(
         lastSearchText = ""
     }
 
-    init {
-        searchDebounce(changedText= String())
-    }
     fun searchDebounce(changedText: String) {
         if (lastSearchText == changedText) {
             return
@@ -127,6 +143,7 @@ class SearchViewModel(
                     )
                 )
             }
+
             else -> {
                 totalPages = vacancies[0].found.div(PER_PAGE)
                 renderState(
@@ -145,6 +162,11 @@ class SearchViewModel(
         else renderNextState(
             SearchState.Empty(
                 message = resourceProvider.getString(R.string.no_vacancies)
-            ))
+            )
+        )
+    }
+
+    fun checkFilters(): Boolean {
+        return interactor.checkFilters()
     }
 }

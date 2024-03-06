@@ -30,10 +30,6 @@ import ru.practicum.android.diploma.util.debounce
 
 class SearchFragment : Fragment() {
 
-    override fun onStart() {
-        super.onStart()
-        checkSharedPrefsForFilters()
-    }
 
     private var _binding: FragmentSearchBinding? = null
     private val viewModel by viewModel<SearchViewModel>()
@@ -57,8 +53,19 @@ class SearchFragment : Fragment() {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel.updateFilters()
+
+        viewModel.observeFilters().observe(viewLifecycleOwner) { filtersApplied ->
+            if (filtersApplied) {
+                binding.FilterButtonIcon.setImageResource(R.drawable.filter_on)
+            } else {
+                binding.FilterButtonIcon.setImageResource(R.drawable.filter_button)
+            }
+        }
 
         initRV()
         binding.clearButtonIcon.setOnClickListener {
@@ -163,8 +170,8 @@ class SearchFragment : Fragment() {
         })
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         _binding = null
     }
 
@@ -227,21 +234,6 @@ class SearchFragment : Fragment() {
         binding.rvSearch.isVisible = false
         binding.searchCount.isVisible = false
         binding.placeholderMessage.isVisible = false
-    }
-
-    private fun checkSharedPrefsForFilters() {
-        val sharedPrefs = requireContext().getSharedPreferences("local_storage", Context.MODE_PRIVATE)
-        val selectedCountry = sharedPrefs.getString("selectedCountry", "")
-        val selectedIndustry = sharedPrefs.getString("selectedIndustry", "")
-        val selectedArea = sharedPrefs.getString("selectedArea", "")
-
-        if (selectedCountry?.isNotEmpty() == true
-            || selectedIndustry?.isNotEmpty() == true
-            || selectedArea?.isNotEmpty() == true) {
-            binding.FilterButtonIcon.setImageResource(R.drawable.filter_on)
-        } else {
-            binding.FilterButtonIcon.setImageResource(R.drawable.filter_button)
-        }
     }
 
 }
